@@ -5,7 +5,7 @@ import argparse
 
 def exploit(url, param, payload):
     full_url = f"{url}{param}{payload}"
-    print(f"[+] Testing {payload.strip()} on {url}?{param}")
+    print(f"[+] Testing {payload.strip()} on {url}{param}")
     
     try:
         start = time.time()
