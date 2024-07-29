@@ -23,7 +23,7 @@ def exploit(url, param, payload):
         
         with open("output.txt", "a") as theoutput:
             theoutput.write(f"Status code: {status_code}\n")
-            theoutput.write(f"URL: {full_url}\n")
+            theoutput.write(f"URL: {url}\n")
             theoutput.write(f"Content Length: {content_length} bytes\n")
             theoutput.write(f"Response time: {response_time:.2f} seconds\n")
             theoutput.write(f"Payload used: {payload}\n\n")
