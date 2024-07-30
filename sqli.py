@@ -4,6 +4,11 @@ import time
 import argparse
 import datetime
 
+def output(outfile, data):
+    dt = datetime.datetime.now().isoformat()
+    with open(outfile, "a") as theoutfile:
+        theoutfile.write(f"{dt}:\t{data}")
+
 def exploit(url, param, payload):
     full_url = f"{url}{param}{payload}"
     print(f"[+] Testing {payload.strip()} on {url}{param}")
@@ -37,11 +42,6 @@ def exploit(url, param, payload):
         return False
 
     return True
-
-def output(outfile, data):
-    dt = datetime.datetime.now().isoformat()
-    with open(outfile, "a") as theoutfile:
-        theoutfile.write(f"{dt}:\t{data}")
 
 def main():
     parser = argparse.ArgumentParser(description="SQL Injection PoC")
