@@ -27,12 +27,16 @@ def exploit(url, param, payload):
         print(f"[+] Content length: {content_length} bytes")
         print(f"[+] Response time: {response_time:.2f} seconds\n")
         
-        output("output.txt", f"Status code: {status_code}\n")
-        output("output.txt", f"URL: {url}\n")
-        output("output.txt", f"Content Length: {content_length} bytes\n")
-        output("output.txt", f"Response time: {response_time:.2f} seconds\n")
-        output("output.txt", f"Payload used: {payload}\n\n")
-        output("output.txt", f"Text: {text}\n\n")
+        if status_code == 200:
+            output("output.txt", f"Status code: {status_code}\n")
+            output("output.txt", f"URL: {url}\n")
+            output("output.txt", f"Content Length: {content_length} bytes\n")
+            output("output.txt", f"Response time: {response_time:.2f} seconds\n")
+            output("output.txt", f"Payload used: {payload}\n\n")
+            output("output.txt", f"Text: {text}\n\n")
+
+        else:
+            print(f"[-] Web request error: {status_code}...\n")
 
     except requests.RequestException as e:
         print(f"[-] Error occurred: {e}")
