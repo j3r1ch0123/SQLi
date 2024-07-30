@@ -37,6 +37,7 @@ def exploit(url, param, payload):
 
         else:
             print(f"[-] Web request error: {status_code}...\n")
+            return False
 
     except requests.RequestException as e:
         print(f"[-] Error occurred: {e}")
