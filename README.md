@@ -1,4 +1,3 @@
-Overview
 This framework is designed to detect and exploit potential blind SQL injection vulnerabilities in web applications. It automates the process of testing various payloads to identify vulnerabilities and can upload a webshell if a vulnerability is found.
 
 Features
