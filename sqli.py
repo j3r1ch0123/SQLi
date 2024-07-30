@@ -2,6 +2,7 @@
 import requests
 import time
 import argparse
+import datetime
 
 def exploit(url, param, payload):
     full_url = f"{url}{param}{payload}"
@@ -21,13 +22,12 @@ def exploit(url, param, payload):
         print(f"[+] Content length: {content_length} bytes")
         print(f"[+] Response time: {response_time:.2f} seconds\n")
         
-        with open("output.txt", "a") as theoutput:
-            theoutput.write(f"Status code: {status_code}\n")
-            theoutput.write(f"URL: {url}\n")
-            theoutput.write(f"Content Length: {content_length} bytes\n")
-            theoutput.write(f"Response time: {response_time:.2f} seconds\n")
-            theoutput.write(f"Payload used: {payload}\n\n")
-            theoutput.write(f"Text: {text}\n\n")
+        output("output.txt", f"Status code: {status_code}\n")
+        output("output.txt", f"URL: {url}\n")
+        output("output.txt", f"Content Length: {content_length} bytes\n")
+        output("output.txt", f"Response time: {response_time:.2f} seconds\n")
+        output("output.txt", f"Payload used: {payload}\n\n")
+        output("output.txt", f"Text: {text}\n\n")
 
     except requests.RequestException as e:
         print(f"[-] Error occurred: {e}")
@@ -37,6 +37,11 @@ def exploit(url, param, payload):
         return False
 
     return True
+
+def output(outfile, data):
+    dt = datetime.datetime.now().isoformat()
+    with open(outfile, "a") as theoutfile:
+        theoutfile.write(f"{dt}:\t{data}")
 
 def main():
     parser = argparse.ArgumentParser(description="SQL Injection PoC")
