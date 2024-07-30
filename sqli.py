@@ -43,7 +43,6 @@ def exploit(url, param, payload):
         print(f"[-] Error occurred: {e}")
         with open("error.log", "a") as thelog:
             thelog.write(str(e) + "\n")
-
         return False
 
     return True
