@@ -79,6 +79,7 @@ def shell_mode(url, param):
                 try:
                     response = requests.get(full_url)
                     print(response.text)
+                    
                 except requests.RequestException as e:
                     print(f"[-] Error: {e}\n")
                     break
