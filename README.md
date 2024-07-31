@@ -40,8 +40,6 @@ Create a file named payloads.txt and populate it with your SQL injection payload
 
 Run the script with the required arguments:
 
-python3 sqli.py <url> <payloads> --param <parameter>
-
 Example
 
 python3 sqli.py https://example.com/vulnerable_uri payloads.txt --param ?id=2
