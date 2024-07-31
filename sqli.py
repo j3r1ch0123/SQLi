@@ -90,7 +90,7 @@ def main():
     parser.add_argument("url", help="Vulnerable URL (e.g. https://example.com/vulnerable_uri)")
     parser.add_argument("payloads", default="payloads.txt", help="File containing payloads")
     parser.add_argument("--param", default="?id=2", help="Parameter to test (default: ?id=2)")
-    parser.add_argument("--overwrite", default="./index.php", help="Overwrite file on server with web shell")
+    parser.add_argument("--overwrite", help="Overwrite file on server with web shell")
     args = parser.parse_args()
 
     print(banner)
