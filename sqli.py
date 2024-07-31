@@ -93,6 +93,7 @@ def main():
     parser.add_argument("--overwrite", default="./index.php", help="Overwrite file on server with web shell")
     args = parser.parse_args()
 
+    print(banner)
     url = args.url
     if not url.startswith("http"):
         url = f"https://{url}"
@@ -100,7 +101,6 @@ def main():
     if args.overwrite:
         overwrite_file(url, args.param, args.overwrite)
 
-    print(banner)
     payloads = []
     with open(args.payloads, "r") as thepayloads:
         for line in thepayloads:
