@@ -110,7 +110,8 @@ def main():
     for payload in payloads:
         exploit(url, args.param, payload)
 
-    shell_mode(url, args.param)
+    # Shell mode is a work in progress
+    #shell_mode(url, args.param)
 
 if __name__ == "__main__":
     main()
